@@ -1,0 +1,7 @@
+- hosts: local
+  remote_user: miles
+  become: true
+  vars_files:
+    - vars.yaml
+  roles:
+    - basic_server_setup
