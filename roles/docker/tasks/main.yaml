@@ -1,9 +1,12 @@
 ---
-  - name: Add repo from Docker
-    shell: curl -sSL https://get.docker.com/ubuntu/ | sudo sh creates=/usr/bin/docker
+  - name: Retrieve get docker script
+    get_url: url=https://get.docker.com dest=/tmp/get_docker.sh mode=0744
  
+  - name: Run get docker script
+    shell: /tmp/get_docker.sh
+
   - name: Install docker
-    apt: name=lxc-docker update-cache=yes
+    apt: name=docker-engine update-cache=yes
  
   - name: get setuptools
     apt: name=python-setuptools state=present
