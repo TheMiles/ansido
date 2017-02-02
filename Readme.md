@@ -7,5 +7,5 @@ expect anything working in here.
 
 The stuff you find is mainly influenced (aka taken)
 from this [blog post](https://ejosh.co/de/2015/05/ansible-for-server-provisioning/)
-by Joshua Johanan with its according [github repo](https://github.com/johanan/Ansible-and-Docker).
+by Joshua Johanan and the corresponding [github repo](https://github.com/johanan/Ansible-and-Docker).
 
