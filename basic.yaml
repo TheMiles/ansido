@@ -5,3 +5,4 @@
     - vars.yaml
   roles:
     - basic_server_setup
+    - docker
