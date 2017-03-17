@@ -1,2 +1,3 @@
 newuser: miles
 ssh_key: /Users/miles/.ssh/id_rsa.pub
+user_pwd: "{{ user_pwd_vault }}"

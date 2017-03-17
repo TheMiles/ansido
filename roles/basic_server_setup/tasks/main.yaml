@@ -4,6 +4,7 @@
  
   - name: create a new user
     user: name={{ newuser }}
+          password={{ user_pwd }}
           state=present
           shell=/bin/bash
  

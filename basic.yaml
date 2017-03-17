@@ -2,6 +2,7 @@
   remote_user: root
   become: true
   vars_files:
+    - vars_vault.yaml
     - vars.yaml
   roles:
     - basic_server_setup

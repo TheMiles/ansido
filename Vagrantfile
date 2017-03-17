@@ -71,7 +71,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "basic.yaml"
-    #ansible.sudo = true
+    ansible.vault_password_file = "~/.vault_pass.txt"
     ansible.extra_vars = { ansible_ssh_user: 'vagrant' }
     ansible.host_key_checking = false
   end
