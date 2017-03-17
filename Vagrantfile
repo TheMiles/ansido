@@ -68,4 +68,12 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "basic.yaml"
+    #ansible.sudo = true
+    ansible.extra_vars = { ansible_ssh_user: 'vagrant' }
+    ansible.host_key_checking = false
+  end
+
 end
