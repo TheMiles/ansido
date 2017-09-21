@@ -1,12 +1,25 @@
 ---
-  - name: Retrieve get docker script
-    get_url: url=https://get.docker.com dest=/tmp/get_docker.sh mode=0744
- 
-  - name: Run get docker script
-    shell: /tmp/get_docker.sh
+  - name: Install prerequisites for https repository
+    apt: name={{item}} state=installed
+    with_items:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg2
+      - software-properties-common
 
+  - name: Add official docker repository
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/debian jessie edge
+      filename: docker.list
+
+  - name: Add Key for docker repo
+    apt_key:
+      url: https://download.docker.com/linux/debian/gpg
+      id: 0EBFCD88
+ 
   - name: Install docker
-    apt: name=docker-engine update-cache=yes
+    apt: name=docker-ce update-cache=yes
  
   - name: get setuptools
     apt: name=python-setuptools state=present
