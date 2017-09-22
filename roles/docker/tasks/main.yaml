@@ -17,22 +17,25 @@
     apt_key:
       url: https://download.docker.com/linux/debian/gpg
       id: 0EBFCD88
- 
+
   - name: Install docker
     apt: name=docker-ce update-cache=yes
- 
+
   - name: get setuptools
     apt: name=python-setuptools state=present
- 
+
   - name: make sure pip works
     shell: easy_install -U pip creates=/usr/local/bin/pip
- 
-  - name: install docker-py
-    pip: name=docker-py state=present
- 
-  - name: install docker-compose
-    pip: name=docker-compose state=present
 
-  - name: Add user to docker group
-    user: name={{ lookup('env','USER') }}
-          groups=docker
+  - name: Ensure old module not present
+    pip:
+      name: docker-py
+      state: absent
+
+  - name: Install pip modules on target box
+    pip:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - docker
+      - docker-compose==1.15.0
