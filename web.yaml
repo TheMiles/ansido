@@ -1,0 +1,9 @@
+- hosts: all
+  remote_user: miles
+  become: true
+  roles:
+    - docker
+    - nginx
+  vars:
+    - webroot: /var/opt/nginx/html
+

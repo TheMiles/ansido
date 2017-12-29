@@ -1,0 +1,20 @@
+---
+  - name: Pull nginx image
+    docker_image:
+      name: nginx
+
+  - name: Create HTML directory
+    file: path={{ webroot }} state=directory mode=0755
+
+  - name: Create index.html
+    copy: src=index.html dest={{ webroot }}
+
+  - name: Start nginx
+    docker_container:
+      name: thesupertestserver
+      image: nginx
+      state: started
+      ports:
+       - "80:80"
+      volumes:
+       - "{{ webroot }}:/usr/share/nginx/html:ro"
