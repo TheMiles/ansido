@@ -1,27 +1,27 @@
 ---
   - name: Install ufw
     apt: name=ufw state=present
- 
+
   - name: create a new user
     user: name={{ newuser }}
           password={{ user_pwd }}
           state=present
           shell=/bin/bash
- 
+
   - authorized_key: user="{{ newuser }}"
-                    key="{{ lookup('file', ssh_key ) }}"
- 
+                    key="{{ ssh_key }}"
+
   - name: Make sure we can sudo
     template: src=newuser_sudoer dest=/etc/sudoers.d/{{ newuser }}_sudoer mode=0440
- 
+
   - name: Configure ufw
     ufw: rule=allow port=22 proto=tcp
- 
+
   - name: Default deny
     ufw: state=enabled direction=incoming policy=deny
- 
+
   - name: Disable root SSH
     copy: src=sshd_config dest=/etc/ssh/sshd_config
- 
+
   - name: Restart SSH
     service: name=ssh state=restarted enabled=yes
