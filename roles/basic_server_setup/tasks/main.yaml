@@ -1,6 +1,6 @@
 ---
   - name: Install ufw
-    apt: name=ufw state=present
+    package: name=ufw state=present
 
   - name: create a new user
     user: name={{ newuser }}
