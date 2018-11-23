@@ -1,0 +1,40 @@
+---
+
+  - name: Install bind DNS package
+    apt: name='bind9' state=present
+
+  - name: test debug
+    shell: "echo 'bla {{ item }}'"
+      #{{ item }} also gut"
+    with_items:
+      - 'test'
+      - 'bla'
+      - 'foo'
+    register: sout
+
+  - name: echo zeug
+    debug:
+      msg: "{{ sout }}"
+
+  # - name: Create directories for chroot environment
+  #   file:
+  #     state: directory
+  #     mode: '755'
+  #     path: "{{ chroot_dir + item }}"
+  #     with_items:
+  #       - 'etc'
+  #       - 'dev'
+  #       - 'var/cache/bind'
+  #       - 'var/run/named'
+
+  - name: Configure firewall for DNS
+    ufw: rule=allow port=53 proto={{ item }}
+    with_items:
+      - 'tcp'
+      - 'udp'
+
+  - name: Don't start the service yet
+    systemd:
+      name: bind9
+      state: stopped
+      enabled: no
