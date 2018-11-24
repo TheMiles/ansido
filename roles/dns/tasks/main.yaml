@@ -9,10 +9,25 @@
       mode: '755'
       path: "{{ chroot_dir }}{{ item }}"
     with_items:
-      - 'etc'
-      - 'dev'
-      - 'var/cache/bind'
-      - 'var/run/named'
+      - '/etc'
+      - '/dev'
+      - '/var/cache/bind'
+      - '/var/run/named'
+
+  - name: create devices in chroot environment
+    shell: mknod -m 0666 "{{ chroot_dir }}{{ item.localdev }}" c 1 {{ item.localvalue }}
+    args:
+      creates: "{{ chroot_dir }}{{ item.localdev }}"
+    with_items:
+      - { localdev: '/dev/null',    localvalue: '3'}
+      - { localdev: '/dev/random',  localvalue: '8'}
+
+  - name: copy system files
+    shell: "cp {{ item }} {{ chroot_dir }}{{ item }}"
+    args:
+      creates: "{{ chroot_dir }}{{ item }}"
+    with_items:
+      - '/etc/localtime'
 
   - name: Configure firewall for DNS
     ufw: rule=allow port=53 proto={{ item }}
