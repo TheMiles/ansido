@@ -29,6 +29,19 @@
     with_items:
       - '/etc/localtime'
 
+  - name: configure rsyslogd
+    template:
+      src: rsyslog_conf
+      dest: /etc/rsyslog.d/22-bind-chroot.conf
+      mode: 0644
+    register: rsyslogconf
+
+  - name: restart rsyslogd
+    systemd:
+      name: rsyslog
+      state: restarted
+    when: rsyslogconf.changed
+
   - name: Configure firewall for DNS
     ufw: rule=allow port=53 proto={{ item }}
     with_items:
