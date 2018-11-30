@@ -54,6 +54,26 @@
       group: root
       mode: 0640
 
+  - name: copy simple configuration files
+    copy:
+      src: "{{ item }}"
+      dest: "{{ chroot_dir }}/etc/bind/{{ item }}"
+      owner: root
+      group: bind
+      mode: 0644
+    with_items:
+      - 'bind.keys'
+      - 'db.0'
+      - 'db.127'
+      - 'db.255'
+      - 'db.empty'
+      - 'db.local'
+      - 'db.root'
+      - 'named.conf'
+      - 'named.conf.default-zones'
+      - 'named.conf.options'
+      - 'zones.rfc1918'
+
   - name: Configure firewall for DNS
     ufw: rule=allow port=53 proto={{ item }}
     with_items:
