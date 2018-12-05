@@ -1,0 +1,30 @@
+{% set ttl                = item.ttl                if item.ttl                is defined else zone_default.ttl %}
+{% set email              = item.email              if item.email              is defined else zone_default.email %}
+{% set refresh            = item.refresh            if item.refresh            is defined else zone_default.refresh %}
+{% set retry              = item.retry              if item.retry              is defined else zone_default.retry %}
+{% set expire             = item.expire             if item.expire             is defined else zone_default.expire %}
+{% set negative_cache_ttl = item.negative_cache_ttl if item.negative_cache_ttl is defined else zone_default.negative_cache_ttl %}
+{% set mail_text          = item.mail_text          if item.mail_text          is defined else zone_default.mail_text %}
+{% set nameserver         = item.nameserver         if item.nameserver         is defined else zone_default.nameserver %}
+{% set reverse_prefix     = item.reverse_zone[:item.reverse_zone.rfind('.')] %}
+{% set reverse_suffix     = item.reverse_zone[item.reverse_zone.rfind('.')+1:] %}
+;
+; BIND data file for {{ reverse_prefix }}.in-addr.arpa. zone
+;
+$TTL    {{ ttl }}
+@   IN  SOA {{ nameserver[0] }}. {{ email }}. (
+             {{ item.serial }}     ; Serial
+             {{ refresh }}            ; Refresh
+             {{ retry }}             ; Retry
+             {{ expire }}             ; Expire
+             {{ negative_cache_ttl }} )           ; Negative Cache TTL
+;
+
+{% for n in nameserver %}
+@   IN  NS  {{ n }}.;
+{% endfor %}
+
+{% for p in item.ptr %}
+{{ reverse_suffix }} PTR {{ p }};
+{% endfor %}
+

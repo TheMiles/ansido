@@ -1,1 +1,60 @@
 chroot_dir: '/var/bind9/chroot'
+zone_default: {
+    email: 'rumiles.googlemail.com',
+    ttl: '604800',
+    refresh: '12h',
+    retry: '2h',
+    expire: '2w',
+    negative_cache_ttl: '1d',
+    mail_text: 'v=spf1 a mx -all',
+    nameserver: ['ns.coders-of-the-caribbean.org', 'ns2.hans.hosteurope.de']
+    }
+zones:
+    - {
+        serial: '2018120701',
+        zone: 'coders-of-the-caribbean.org',
+        mx: [{ priority: '10', host: 'mail'}],
+        a: [
+            {
+                name:    ['coders-of-the-caribbean.org.','www','mail','melee'],
+                address: ['176.28.17.93']
+            },
+            {
+                name:    ['ns'],
+                address: ['176.28.17.93', '195.201.139.126']
+            },
+            {
+                name:    ['scabb'],
+                address: ['195.201.139.126']
+            }
+            ]
+    }
+    - {
+        serial: '2018120701',
+        zone: 'coders-of-the-caribbean.de',
+        mx: [{ priority: '10', host: 'mail'}],
+        a: [
+            {
+                name:    ['coders-of-the-caribbean.de.','www','mail'],
+                address: ['176.28.17.93']
+            }
+            ]
+        }
+    - {
+        serial: '2018120701',
+        zone: 'lauschwaren.de',
+        mx: [{ priority: '10', host: 'mail'}],
+        a: [
+            {
+                name:    ['lauschwaren.de.','www','mail'],
+                address: ['176.28.17.93']
+            }
+            ]
+    }
+
+reverse_zones:
+    - {
+        serial: '2018120701',
+        reverse_zone: '176.28.17.93',
+        ptr: ['coders-of-the-caribbean.org', 'coders-of-the-caribbean.de','lauschwaren.de']
+    }

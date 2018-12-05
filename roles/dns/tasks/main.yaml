@@ -74,6 +74,20 @@
       - 'named.conf.options'
       - 'zones.rfc1918'
 
+  - name: configure local zone files
+    template:
+      src: named.conf.local
+      dest: "{{ chroot_dir }}/etc/bind/named.conf.local"
+      mode: 0644
+
+  - name: configure forward zone files
+    template:
+      src: db.zone
+      dest: "{{ chroot_dir }}/etc/bind/db.{{ item.zone }}"
+      mode: 0644
+    with_items:
+      "{{ zones }}"
+
   - name: Configure firewall for DNS
     ufw: rule=allow port=53 proto={{ item }}
     with_items:

@@ -1,0 +1,22 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+{% for d in zones %}
+zone "{{ d.zone }}" {
+    type master;
+    file "/etc/bind/db.{{ d.zone }}";
+};
+{% endfor %}
+
+{% for d in reverse_zones %}
+zone "{{ d.reverse_zone[:d.reverse_zone.rfind('.')] }}.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.{{ d.reverse_zone[d.reverse_zone.rfind('.')+1:] }}";
+};
+{% endfor %}
+
