@@ -31,7 +31,7 @@
 
   - name: configure rsyslogd
     template:
-      src: rsyslog_conf
+      src: rsyslog.conf.j2
       dest: /etc/rsyslog.d/22-bind-chroot.conf
       mode: 0644
     register: rsyslogconf
@@ -76,13 +76,13 @@
 
   - name: configure local zone files
     template:
-      src: named.conf.local
+      src: named.conf.local.j2
       dest: "{{ chroot_dir }}/etc/bind/named.conf.local"
       mode: 0644
 
   - name: configure forward zone files
     template:
-      src: db.zone
+      src: db.zone.j2
       dest: "{{ chroot_dir }}/etc/bind/db.{{ item.zone }}"
       mode: 0644
     with_items:
@@ -90,7 +90,7 @@
 
   - name: configure reverse zone files
     template:
-      src: db.reverse_zone
+      src: db.reverse_zone.j2
       dest: "{{ chroot_dir }}/etc/bind/db.{{ item.reverse_zone[item.reverse_zone.rfind('.')+1:] }}"
       mode: 0644
     with_items:
