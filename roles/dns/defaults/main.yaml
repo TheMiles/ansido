@@ -54,7 +54,7 @@ zones:
 
 reverse_zones:
     - {
-        serial: '2018120701',
+        serial: '2019010801',
         reverse_zone: '176.28.17.93',
-        ptr: ['coders-of-the-caribbean.org', 'coders-of-the-caribbean.de','lauschwaren.de']
+        ptr: ['coders-of-the-caribbean.org.','mail.coders-of-the-caribbean.org.','coders-of-the-caribbean.de.','mail.coders-of-the-caribbean.de.','lauschwaren.de.','mail.lauschwaren.de.']
     }

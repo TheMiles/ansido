@@ -88,6 +88,14 @@
     with_items:
       "{{ zones }}"
 
+  - name: configure reverse zone files
+    template:
+      src: db.reverse_zone
+      dest: "{{ chroot_dir }}/etc/bind/db.{{ item.reverse_zone[item.reverse_zone.rfind('.')+1:] }}"
+      mode: 0644
+    with_items:
+      "{{ reverse_zones }}"
+
   - name: Configure firewall for DNS
     ufw: rule=allow port=53 proto={{ item }}
     with_items:
