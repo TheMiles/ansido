@@ -108,8 +108,26 @@
       - 'tcp'
       - 'udp'
 
+  - name: Prepare systemd configuration directories
+    file:
+      state: directory
+      owner: root
+      group: root
+      mode: 0755
+      path: /etc/systemd/system/bind9.service.d
+
+
+  - name: Configure systemd to start bind with chroot
+    template:
+      src: chroot.conf.j2
+      dest: /etc/systemd/system/bind9.service.d/chroot.conf
+      owner: root
+      group: root
+      mode: 0644
+
   - name: Don't start the service yet
     systemd:
+      daemon_reload: yes
       name: bind9
       state: stopped
       enabled: no

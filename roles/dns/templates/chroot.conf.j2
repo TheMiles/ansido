@@ -1,0 +1,7 @@
+[Service]
+ExecStart=
+ExecStart=/usr/sbin/named -f -u bind -t {{ chroot_dir }}
+ExecReload=
+ExecReload=/usr/sbin/rndc -k {{ chroot_dir }}/etc/bind/rndc.key reload
+ExecStop=
+ExecStop=/usr/sbin/rndc -k {{ chroot_dir }}/etc/bind/rndc.key stop
