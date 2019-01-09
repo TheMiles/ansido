@@ -1,4 +1,6 @@
 chroot_dir: '/var/bind9/chroot'
+bind_user: 'bind'
+bind_group: 'bind'
 zone_default: {
     email: 'rumiles.googlemail.com',
     ttl: '604800',

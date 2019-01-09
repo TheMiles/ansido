@@ -50,8 +50,8 @@
   - name: set permissions for rndc.key
     file:
       path: "{{ chroot_dir }}/etc/bind/rndc.key"
-      owner: root
-      group: root
+      owner: "{{ bind_user }}"
+      group: "{{ bind_group }}"
       mode: 0640
 
   - name: copy simple configuration files
@@ -59,7 +59,7 @@
       src: "{{ item }}"
       dest: "{{ chroot_dir }}/etc/bind/{{ item }}"
       owner: root
-      group: bind
+      group: "{{ bind_group }}"
       mode: 0644
     with_items:
       - 'bind.keys'
@@ -78,12 +78,16 @@
     template:
       src: named.conf.local.j2
       dest: "{{ chroot_dir }}/etc/bind/named.conf.local"
+      owner: root
+      group: "{{ bind_group }}"
       mode: 0644
 
   - name: configure forward zone files
     template:
       src: db.zone.j2
       dest: "{{ chroot_dir }}/etc/bind/db.{{ item.zone }}"
+      owner: root
+      group: "{{ bind_group }}"
       mode: 0644
     with_items:
       "{{ zones }}"
@@ -92,6 +96,8 @@
     template:
       src: db.reverse_zone.j2
       dest: "{{ chroot_dir }}/etc/bind/db.{{ item.reverse_zone[item.reverse_zone.rfind('.')+1:] }}"
+      owner: root
+      group: "{{ bind_group }}"
       mode: 0644
     with_items:
       "{{ reverse_zones }}"
