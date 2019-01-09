@@ -37,5 +37,5 @@ $TTL    {{ ttl }}
 {% endfor %}
 
 {% if item.mx is defined %}
-    {{ item.zone }}. TXT "{{ mail_text }}"
+{{ item.zone }}. TXT "{{ mail_text }}"
 {% endif %}
