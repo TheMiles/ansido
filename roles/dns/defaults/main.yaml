@@ -9,7 +9,9 @@ zone_default: {
     expire: '2w',
     negative_cache_ttl: '1d',
     mail_text: 'v=spf1 a mx -all',
-    nameserver: ['ns.coders-of-the-caribbean.org', 'ns2.hans.hosteurope.de']
+    nameserver: ['ns.coders-of-the-caribbean.org', 'ns2.hans.hosteurope.de'],
+    master_host: 'melee',
+    master_address: '176.28.17.93'
     }
 zones:
     - {
@@ -45,6 +47,8 @@ zones:
     - {
         serial: '2018120701',
         zone: 'lauschwaren.de',
+        master_host: 'scabb',
+        master_address: '195.201.139.126',
         mx: [{ priority: '10', host: 'mail'}],
         a: [
             {
@@ -58,5 +62,12 @@ reverse_zones:
     - {
         serial: '2019010801',
         reverse_zone: '176.28.17.93',
-        ptr: ['coders-of-the-caribbean.org.','mail.coders-of-the-caribbean.org.','coders-of-the-caribbean.de.','mail.coders-of-the-caribbean.de.','lauschwaren.de.','mail.lauschwaren.de.']
+        ptr: ['coders-of-the-caribbean.org.','mail.coders-of-the-caribbean.org.','coders-of-the-caribbean.de.','mail.coders-of-the-caribbean.de.']
+    }
+    - {
+        serial: '2019010801',
+        reverse_zone: '195.201.139.126',
+        master_host: 'scabb',
+        master_address: '195.201.139.126',
+        ptr: ['lauschwaren.de.','mail.lauschwaren.de.']
     }
