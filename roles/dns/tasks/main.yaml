@@ -89,6 +89,8 @@
       owner: root
       group: "{{ bind_group }}"
       mode: 0644
+    when: (item.master_host is defined and item.master_host == inventory_hostname) or
+           zone_default.master_host == inventory_hostname
     with_items:
       "{{ zones }}"
 
@@ -99,6 +101,8 @@
       owner: root
       group: "{{ bind_group }}"
       mode: 0644
+    when: (item.master_host is defined and item.master_host == inventory_hostname) or
+          zone_default.master_host == inventory_hostname
     with_items:
       "{{ reverse_zones }}"
 
