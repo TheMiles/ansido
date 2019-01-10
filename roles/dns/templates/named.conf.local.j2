@@ -7,16 +7,34 @@
 //include "/etc/bind/zones.rfc1918";
 
 {% for d in zones %}
+{% set master_host    = d.master_host    if d.master_host    is defined else zone_default.master_host %}
+{% set master_address = d.master_address if d.master_address is defined else zone_default.master_address %}
 zone "{{ d.zone }}" {
+{% if master_host == inventory_hostname %}
     type master;
     file "/etc/bind/db.{{ d.zone }}";
+{% else %}
+    type slave;
+    masters { {{ master_address }}; };
+    file "/etc/bind/bak.{{ d.zone }}";
+{% endif %}
 };
 {% endfor %}
 
 {% for d in reverse_zones %}
-zone "{{ d.reverse_zone[:d.reverse_zone.rfind('.')] }}.in-addr.arpa" {
+{% set master_host    = d.master_host    if d.master_host    is defined else zone_default.master_host %}
+{% set master_address = d.master_address if d.master_address is defined else zone_default.master_address %}
+{% set zone_prefix    = d.reverse_zone[d.reverse_zone.rfind('.')+1:] %}
+{% set zone_suffix    = d.reverse_zone[:d.reverse_zone.rfind('.')] %}
+zone "{{ zone_suffix }}.in-addr.arpa" {
+{% if master_host == inventory_hostname %}
     type master;
-    file "/etc/bind/db.{{ d.reverse_zone[d.reverse_zone.rfind('.')+1:] }}";
+    file "/etc/bind/db.{{ zone_prefix }}";
+{% else %}
+    type slave;
+    masters { {{ master_address }}; };
+    file "/etc/bind/bak.{{ zone_prefix }}";
+{% endif %}
 };
 {% endfor %}
 
