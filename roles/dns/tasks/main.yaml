@@ -14,6 +14,14 @@
       - '/var/cache/bind'
       - '/var/run/named'
 
+  - name: Create directory for backup zone files written by bind daemon
+    file:
+      state: directory
+      mode: '755'
+      owner: "{{ bind_user }}"
+      group: "{{ bind_group }}"
+      path:  "{{ chroot_dir }}/var/lib/bind"
+
   - name: create devices in chroot environment
     shell: mknod -m 0666 "{{ chroot_dir }}{{ item.localdev }}" c 1 {{ item.localvalue }}
     args:

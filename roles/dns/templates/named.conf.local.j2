@@ -16,7 +16,7 @@ zone "{{ d.zone }}" {
 {% else %}
     type slave;
     masters { {{ master_address }}; };
-    file "/etc/bind/bak.{{ d.zone }}";
+    file "/var/lib/bind/bak.{{ d.zone }}";
 {% endif %}
 };
 {% endfor %}
@@ -33,7 +33,7 @@ zone "{{ zone_suffix }}.in-addr.arpa" {
 {% else %}
     type slave;
     masters { {{ master_address }}; };
-    file "/etc/bind/bak.{{ zone_prefix }}";
+    file "/var/lib/bind/bak.{{ zone_prefix }}";
 {% endif %}
 };
 {% endfor %}
