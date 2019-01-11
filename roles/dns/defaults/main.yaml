@@ -10,6 +10,7 @@ zone_default: {
     negative_cache_ttl: '1d',
     mail_text: 'v=spf1 a mx -all',
     nameserver: ['ns.coders-of-the-caribbean.org', 'ns2.hans.hosteurope.de'],
+    nameserver_addresses: ['176.28.17.93', '195.201.139.126', '80.237.128.10'],
     master_host: 'melee',
     master_address: '176.28.17.93'
     }

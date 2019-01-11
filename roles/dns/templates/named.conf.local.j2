@@ -18,6 +18,13 @@ zone "{{ d.zone }}" {
     masters { {{ master_address }}; };
     file "/var/lib/bind/bak.{{ d.zone }}";
 {% endif %}
+{% if d.nameserver_addresses is defined %}
+    allow-transfer {
+{% for a in d.nameserver_addresses %}
+        {{ a }};
+{% endfor %}
+    };
+{% endif %}
 };
 {% endfor %}
 
@@ -34,6 +41,13 @@ zone "{{ zone_suffix }}.in-addr.arpa" {
     type slave;
     masters { {{ master_address }}; };
     file "/var/lib/bind/bak.{{ zone_prefix }}";
+{% endif %}
+{% if d.nameserver_addresses is defined %}
+    allow-transfer {
+{% for a in d.nameserver_addresses %}
+        {{ a }};
+{% endfor %}
+    };
 {% endif %}
 };
 {% endfor %}

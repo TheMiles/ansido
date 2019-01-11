@@ -79,8 +79,15 @@
       - 'db.root'
       - 'named.conf'
       - 'named.conf.default-zones'
-      - 'named.conf.options'
       - 'zones.rfc1918'
+
+  - name: configure options file
+    template:
+      src: named.conf.options.j2
+      dest: "{{ chroot_dir }}/etc/bind/named.conf.options"
+      owner: root
+      group: "{{ bind_group }}"
+      mode: 0644
 
   - name: configure local zone files
     template:
