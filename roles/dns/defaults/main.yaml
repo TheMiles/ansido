@@ -46,7 +46,7 @@ zones:
             ]
         }
     - {
-        serial: '2018120701',
+        serial: '2019031901',
         zone: 'lauschwaren.de',
         master_host: 'scabb',
         master_address: '195.201.139.126',
@@ -54,7 +54,7 @@ zones:
         a: [
             {
                 name:    ['lauschwaren.de.','www','mail'],
-                address: ['176.28.17.93']
+                address: ['195.201.139.126']
             }
             ]
     }
