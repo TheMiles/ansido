@@ -9,27 +9,23 @@ zone_default: {
     expire: '2w',
     negative_cache_ttl: '1d',
     mail_text: 'v=spf1 a mx -all',
-    nameserver: ['ns.coders-of-the-caribbean.org', 'ns2.hans.hosteurope.de'],
-    nameserver_addresses: ['176.28.17.93', '195.201.139.126', '80.237.128.10'],
+    nameserver: ['ns1.coders-of-the-caribbean.org','ns2.coders-of-the-caribbean.org'],
+    nameserver_addresses: ['176.28.17.93', '195.201.139.126'],
     master_host: 'melee',
     master_address: '176.28.17.93'
     }
 zones:
     - {
-        serial: '2018120701',
+        serial: '2019031901',
         zone: 'coders-of-the-caribbean.org',
         mx: [{ priority: '10', host: 'mail'}],
         a: [
             {
-                name:    ['coders-of-the-caribbean.org.','www','mail','melee'],
+                name:    ['coders-of-the-caribbean.org.','www','mail','melee','ns1'],
                 address: ['176.28.17.93']
             },
             {
-                name:    ['ns'],
-                address: ['176.28.17.93', '195.201.139.126']
-            },
-            {
-                name:    ['scabb'],
+                name:    ['scabb','ns2'],
                 address: ['195.201.139.126']
             }
             ]
