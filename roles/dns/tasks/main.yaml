@@ -144,9 +144,9 @@
       group: root
       mode: 0644
 
-  - name: Don't start the service yet
+  - name: Start the service
     systemd:
       daemon_reload: yes
       name: bind9
-      state: stopped
-      enabled: no
+      state: restarted
+      enabled: yes
