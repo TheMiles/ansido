@@ -42,16 +42,18 @@ zones:
             ]
         }
     - {
-        serial: '2019032501',
+        serial: '2019032603',
         zone: 'lauschwaren.de',
         master_host: 'scabb',
         master_address: '195.201.139.126',
         mx: [{ priority: '10', host: 'mail'}],
         a: [
             {
-                name:    ['lauschwaren.de.','www','mail'],
-                address: ['195.201.139.126']
+                name:      ['lauschwaren.de.','www','mail'],
+                address:   ['195.201.139.126'],
+                address_6: ['2a01:4f8:1c1c:894a::1']
             }
+            ],
         cname: [
             {
                 name: ["postfixadmin","spam"],

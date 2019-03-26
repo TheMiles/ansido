@@ -30,9 +30,16 @@ $TTL    {{ ttl }}
 ;
 {% for a in item.a %}
 {% for name in a.name %}
+{% if a.address is defined %}
 {% for address in a.address %}
 {{ name }}         A   {{ address }};
 {% endfor %}
+{% endif %}
+{% if a.address_6 is defined %}
+{% for address in a.address_6 %}
+{{ name }}         AAAA   {{ address }};
+{% endfor %}
+{% endif %}
 {% endfor %}
 {% endfor %}
 {% for cname in item.cname %}
