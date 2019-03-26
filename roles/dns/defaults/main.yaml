@@ -16,28 +16,31 @@ zone_default: {
     }
 zones:
     - {
-        serial: '2019031901',
+        serial: '2019032601',
         zone: 'coders-of-the-caribbean.org',
         mx: [{ priority: '10', host: 'mail'}],
         a: [
             {
-                name:    ['coders-of-the-caribbean.org.','www','mail','melee','ns1'],
-                address: ['176.28.17.93']
+                name:      ['coders-of-the-caribbean.org.','www','mail','melee','ns1'],
+                address:   ['176.28.17.93'],
+                address_6: ['2a01:488:66:1000:b01c:115d:0:1']
             },
             {
-                name:    ['scabb','ns2'],
-                address: ['195.201.139.126']
+                name:      ['scabb','ns2'],
+                address:   ['195.201.139.126'],
+                address_6: ['2a01:4f8:1c1c:894a::1']
             }
             ]
     }
     - {
-        serial: '2018120701',
+        serial: '2019032601',
         zone: 'coders-of-the-caribbean.de',
         mx: [{ priority: '10', host: 'mail'}],
         a: [
             {
-                name:    ['coders-of-the-caribbean.de.','www','mail'],
-                address: ['176.28.17.93']
+                name:      ['coders-of-the-caribbean.de.','www','mail'],
+                address:   ['176.28.17.93'],
+                address_6: ['2a01:488:66:1000:b01c:115d:0:1']
             }
             ]
         }
