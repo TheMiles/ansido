@@ -35,6 +35,11 @@ $TTL    {{ ttl }}
 {% endfor %}
 {% endfor %}
 {% endfor %}
+{% for cname in item.cname %}
+{% for name in cname.name %}
+{{ name }}         CNAME   {{ cname.link }};
+{% endfor %}
+{% endfor %}
 
 {% if item.mx is defined %}
 {{ item.zone }}. TXT "{{ mail_text }}"
