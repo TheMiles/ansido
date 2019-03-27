@@ -29,6 +29,7 @@
     with_items:
       - { localdev: '/dev/null',    localvalue: '3'}
       - { localdev: '/dev/random',  localvalue: '8'}
+      - { localdev: '/dev/urandom', localvalue: '9'}
 
   - name: copy system files
     shell: "cp {{ item }} {{ chroot_dir }}{{ item }}"
