@@ -11,16 +11,26 @@
     with_items:
       - '/etc/bind'
       - '/dev'
-      - '/var/cache/bind'
       - '/var/run/named'
 
-  - name: Create directory for backup zone files written by bind daemon
+  - name: Create directories writable by bind daemon
     file:
       state: directory
       mode: '755'
       owner: "{{ bind_user }}"
       group: "{{ bind_group }}"
-      path:  "{{ chroot_dir }}/var/lib/bind"
+      path: "{{ chroot_dir }}{{ item }}"
+    with_items:
+      - '/var/cache/bind'
+      - '/var/lib/bind'
+
+  - name: Create directory for managed keys
+    file:
+      state: directory
+      mode: '750'
+      owner: "{{ bind_user }}"
+      group: "{{ bind_group }}"
+      path:  "{{ chroot_dir }}/var/lib/bind_managed_keys/dynamic"
 
   - name: create devices in chroot environment
     shell: mknod -m 0666 "{{ chroot_dir }}{{ item.localdev }}" c 1 {{ item.localvalue }}
