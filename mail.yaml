@@ -1,0 +1,6 @@
+- hosts: scabb
+  remote_user: miles
+  become: true
+  roles:
+    - docker
+

@@ -1,0 +1,58 @@
+---
+
+# https://docs.docker.com/engine/installation/linux/docker-ce/debian/
+- name: remove any old docker versions (and docker-compose binary)
+  apt: name={{packages}} state=absent purge=yes
+  vars:
+    packages:
+    - docker
+    - docker-engine
+    - docker.io
+    - docker-compose
+    - containerd
+    - runc
+
+- name: Install prerequisites for https repository
+  apt: name={{packages}} state=present update_cache=yes
+  vars:
+    packages:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg2
+    - software-properties-common
+
+- name: Add Key for docker repo
+  apt_key:
+    url: 'https://download.docker.com/linux/debian/gpg'
+    id: 0EBFCD88
+    state: present
+
+- name: Add official docker repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/debian {{ ansible_lsb.codename }} stable
+    filename: docker.list
+    state: present
+
+- name: Install docker-ce
+  apt: name='docker-ce' state=present update_cache=yes
+
+- name: get setuptools
+  apt: name=python-setuptools state=present
+
+- name: make sure pip works
+  shell: easy_install -U pip creates=/usr/local/bin/pip
+
+- name: Ensure old module not present
+  pip:
+    name: docker-py
+    state: absent
+
+- name: Install pip modules on target box
+  pip:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+    - docker
+    - docker-compose==1.15.0
