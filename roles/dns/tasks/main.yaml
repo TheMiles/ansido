@@ -112,7 +112,7 @@
   - name: configure reverse zone files
     template:
       src: db.reverse_zone.j2
-      dest: "{{ chroot_dir }}/etc/bind/db.{{ item.reverse_zone[item.reverse_zone.rfind('.')+1:] }}"
+      dest: "{{ chroot_dir }}/etc/bind/db.{{ item.reverse_zone | ipaddr('revdns') }}"
       owner: root
       group: "{{ bind_group }}"
       mode: 0644

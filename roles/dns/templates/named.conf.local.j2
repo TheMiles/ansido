@@ -31,16 +31,14 @@ zone "{{ d.zone }}" {
 {% for d in reverse_zones %}
 {% set master_host    = d.master_host    if d.master_host    is defined else zone_default.master_host %}
 {% set master_address = d.master_address if d.master_address is defined else zone_default.master_address %}
-{% set zone_prefix    = d.reverse_zone.split('.')[3] %}
-{% set zone_reverse    = '.'.join(d.reverse_zone.split('.')[::-1]) %}
-zone "{{ zone_reverse }}.in-addr.arpa" {
+zone "{{ d.reverse_zone | ipaddr('revdns') }}" {
 {% if master_host == inventory_hostname %}
     type master;
-    file "/etc/bind/db.{{ zone_prefix }}";
+    file "/etc/bind/db.{{ d.reverse_zone | ipaddr('revdns') }}";
 {% else %}
     type slave;
     masters { {{ master_address }}; };
-    file "/var/lib/bind/bak.{{ zone_prefix }}";
+    file "/var/lib/bind/bak.{{ d.reverse_zone | ipaddr('revdns') }}";
 {% endif %}
 {% if d.nameserver_addresses is defined %}
     allow-transfer {
