@@ -1,0 +1,35 @@
+---
+
+- name: Check whether to register certificates for this host
+  meta: end_play
+  when: inventory_hostname not in letsencrypt_hosts.keys()
+
+- name: Set up the letsencrypt directory
+  file: path=/etc/letsencrypt state=directory recurse=yes
+
+- name: Configure firewall for DNS
+  ufw: rule=allow port={{ item }} proto=tcp
+  with_items:
+    - '80'
+    - '443'
+
+- name: Prepare domain list
+  set_fact:
+    le_domains: "{{ le_domains | default('') | trim() }} -d {{ item }}"
+  with_items:
+    "{{ letsencrypt_hosts[inventory_hostname] }}"
+
+- name: Install certbot
+  copy:
+    src: files/certbot
+    dest: /usr/local/bin/certbot
+    mode: 0755
+
+- name: Generate certs
+  shell: >
+    certbot certonly --standalone --rsa-key-size 4096 --agree-tos
+    -m {{ letsencrypt_email }}
+    {{ le_domains }}
+  args:
+    creates: /etc/letsencrypt/live/{{ letsencrypt_hosts[inventory_hostname][0] }}
+

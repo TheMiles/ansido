@@ -1,0 +1,8 @@
+---
+letsencrypt_email: rumiles@gmail.com
+letsencrypt_hosts:
+  scabb:
+    - 'lauschwaren.de'
+  melee:
+    - 'coders-of-the-caribbean.org'
+    - 'coders-of-the-caribbean.de'
