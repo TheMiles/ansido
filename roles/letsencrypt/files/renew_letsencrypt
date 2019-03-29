@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# invluence by https://github.com/ksylvan/docker-mail-server/tree/develop/roles/certificates/files
+
+certbot=/usr/local/bin/certbot
+
+LIMIT=5
+DAYS=$($certbot certificates 2>/dev/null | grep VALID: | sed 's/.*VALID: *\([0-9]\+\) *days.*/\1/')
+
+msg=/tmp/msg$$; trap "rm -f $msg" EXIT
+
+if [ -z "$DAYS" ]
+then
+  SUBJECT="Cert Renewal ERROR: Could not parse EXPIRY"
+  echo "$c returned:" > $msg
+  $certbot certificates >> $msg 2>&1
+else
+  if [ $DAYS -lt $LIMIT ]; then
+    $certbot renew >> $msg 2>&1
+    SUBJECT="Cert Renewal Attempt (Valid for $DAYS days)"
+  else
+    SUBJECT="Cert is still valid (for $DAYS days)"
+    $certbot certificates > $msg 2>&1
+  fi
+fi
+(cat << HEADERS
+From: admin@{{ domain_name }}
+To: postmaster
+Subject: $SUBJECT
+
+HEADERS
+cat $msg)| /usr/sbin/sendmail -i -t

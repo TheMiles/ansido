@@ -21,7 +21,7 @@
 
 - name: Install certbot
   copy:
-    src: files/certbot
+    src: certbot
     dest: /usr/local/bin/certbot
     mode: 0755
 
@@ -33,3 +33,15 @@
   args:
     creates: /etc/letsencrypt/live/{{ letsencrypt_hosts[inventory_hostname][0] }}
 
+- name: Renew script
+  copy:
+    src: renew_letsencrypt
+    dest: /usr/local/bin/renew_letsencrypt
+    mode: 0755
+
+- name: Set up renewal cron job
+  cron:
+    name: "renew letsencrypt"
+    hour: 2
+    minute: 19
+    job: "/usr/local/bin/renew_letsencrypt"
