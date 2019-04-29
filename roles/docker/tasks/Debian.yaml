@@ -56,3 +56,16 @@
     packages:
     - docker
     - docker-compose==1.15.0
+
+- name: Add user to docker group
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+
+- name: Add docker base directory
+  file:
+    state: directory
+    mode: '755'
+    owner: "{{ ansible_user }}"
+    group: docker
+    path: "{{ docker_base_dir }}"
