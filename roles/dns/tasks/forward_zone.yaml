@@ -1,0 +1,12 @@
+---
+
+- set_fact:
+    zone_file: "{{ chroot_dir }}/etc/bind/db.{{ zone }}"
+
+- name: Create forward zone file
+  template:
+    src: db.zone.j2
+    dest: "{{ zone_file }}"
+    owner: root
+    group: "{{ bind_group }}"
+    mode: 0644

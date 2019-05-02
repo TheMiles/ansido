@@ -109,12 +109,7 @@
       mode: 0644
 
   - name: configure forward zone files
-    template:
-      src: db.zone.j2
-      dest: "{{ chroot_dir }}/etc/bind/db.{{ item.zone }}"
-      owner: root
-      group: "{{ bind_group }}"
-      mode: 0644
+    include: forward_zone.yaml zone="{{ item.zone }}"
     when: (item.master_host is defined and item.master_host == inventory_hostname) or
            zone_default.master_host == inventory_hostname
     with_items:
