@@ -1,0 +1,29 @@
+---
+
+- set_fact:
+    serial_date_today: "{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}01"
+
+
+- name: Check whether zone file is existing and needs updating
+  stat:
+    path: "{{ zone_file }}"
+  register: zone_stat
+
+- name: Retrieve serial number for zone
+  block:
+  - slurp:
+      src: "{{ zone_file }}"
+    register: zone_content
+  - set_fact:
+      serial_file: "{{ zone_content['content'] | b64decode | regex_replace('(?s)^.*([0-9]{10}).*Serial.*$', '\\1')  }}"
+
+  - set_fact:
+      serial_file_incremented: "{{ serial_file[:8] }}{{ '%02d' | format(serial_file[8:] | int +1) }}"
+
+  - set_fact:
+      next_serial: "{{ (serial_file_incremented > serial_date_today) | ternary(serial_file_incremented, serial_date_today) }}"
+  when: zone_stat.stat.exists == True
+
+- set_fact:
+    next_serial: "{{ serial_date_today }}"
+  when: zone_stat.stat.exists == False
