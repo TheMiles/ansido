@@ -109,7 +109,7 @@
       mode: 0644
 
   - name: configure forward zone files
-    include: forward_zone.yaml zone="{{ item.zone }}"
+    include: forward_zone.yaml zone_filename="db.{{ item.zone }}"
     when: (item.master_host is defined and item.master_host == inventory_hostname) or
            zone_default.master_host == inventory_hostname
     with_items:

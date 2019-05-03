@@ -6,13 +6,13 @@
 
 - name: Check whether zone file is existing and needs updating
   stat:
-    path: "{{ zone_file }}"
+    path: "{{ zone_filepath }}"
   register: zone_stat
 
 - name: Retrieve serial number for zone
   block:
   - slurp:
-      src: "{{ zone_file }}"
+      src: "{{ zone_filepath }}"
     register: zone_content
   - set_fact:
       serial_file: "{{ zone_content['content'] | b64decode | regex_replace('(?s)^.*([0-9]{10}).*Serial.*$', '\\1')  }}"

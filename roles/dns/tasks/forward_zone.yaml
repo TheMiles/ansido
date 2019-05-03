@@ -1,43 +1,38 @@
 ---
 
 - set_fact:
-    zone_file: "{{ chroot_dir }}/etc/bind/db.{{ zone }}"
+    zone_filepath: "{{ chroot_dir }}/etc/bind/{{ zone_filename }}"
 
 - include: retrieve_next_serial.yaml
 
-
-
-- name: Ensure DKIM key directory is present
-  file:
-    state: directory
-    mode: '700'
-    path: "{{ dkim_dir }}"
-    owner: "{{ ansible_user }}"
-    group: docker
-    recurse: yes
-
-- name: ensure OpenSSL is present
-  pip:
-    name: pyOpenSSL
-    state: present
-
 - name: Create DKIM key
   block:
+  - file:
+      state: directory
+      mode: '700'
+      path: "{{ dkim_dir }}"
+      owner: "{{ ansible_user }}"
+      group: docker
+      recurse: yes
+  - pip:
+      name: pyOpenSSL
+      state: present
   - openssl_privatekey:
-      path: "{{ dkim_dir }}/{{ zone }}.private.key"
+      path: "{{ dkim_dir }}/{{ item.zone }}.private.key"
       owner: "{{ ansible_user }}"
       group: docker
       size: 1024
   - openssl_publickey:
-      path: "{{ dkim_dir }}/{{ zone }}.public.key"
-      privatekey_path: "{{ dkim_dir }}/{{ zone }}.private.key"
+      path: "{{ dkim_dir }}/{{ item.zone }}.public.key"
+      privatekey_path: "{{ dkim_dir }}/{{ item.zone }}.private.key"
       owner: "{{ ansible_user }}"
       group: docker
+  when: item.mx is defined
 
 - name: Create forward zone file
   template:
     src: db.zone.j2
-    dest: "{{ zone_file }}"
+    dest: "{{ zone_filepath }}"
     owner: root
     group: "{{ bind_group }}"
     mode: 0644
