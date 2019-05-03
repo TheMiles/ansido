@@ -16,7 +16,6 @@ zone_default: {
     }
 zones:
     - {
-        serial: '2019032701',
         zone: 'coders-of-the-caribbean.org',
         mx: [{ priority: '10', host: 'mail'}],
         a: [
@@ -31,7 +30,6 @@ zones:
             ]
     }
     - {
-        serial: '2019032701',
         zone: 'coders-of-the-caribbean.de',
         mx: [{ priority: '10', host: 'mail'}],
         a: [
@@ -42,7 +40,6 @@ zones:
             ]
         }
     - {
-        serial: '2019032701',
         zone: 'lauschwaren.de',
         master_host: 'scabb',
         master_address: '195.201.139.126',
