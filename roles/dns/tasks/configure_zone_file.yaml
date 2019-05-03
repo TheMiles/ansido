@@ -29,9 +29,9 @@
       group: docker
   when: item.mx is defined
 
-- name: Create forward zone file
+- name: Create zone file
   template:
-    src: db.zone.j2
+    src: "{{ zone_template }}"
     dest: "{{ zone_filepath }}"
     owner: root
     group: "{{ bind_group }}"

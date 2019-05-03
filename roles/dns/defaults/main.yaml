@@ -64,19 +64,16 @@ zones:
 
 reverse_zones:
     - {
-        serial: '2019010801',
         reverse_zone: '176.28.17.93',
         ptr: ['coders-of-the-caribbean.org.','mail.coders-of-the-caribbean.org.','coders-of-the-caribbean.de.','mail.coders-of-the-caribbean.de.']
     }
     - {
-        serial: '2019010801',
         reverse_zone: '195.201.139.126',
         master_host: 'scabb',
         master_address: '195.201.139.126',
         ptr: ['lauschwaren.de.','mail.lauschwaren.de.']
     }
     - {
-        serial: '2019032701',
         reverse_zone: '2a01:4f8:1c1c:894a::1',
         master_host: 'scabb',
         master_address: '2a01:4f8:1c1c:894a::1',

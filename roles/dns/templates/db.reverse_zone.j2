@@ -11,7 +11,7 @@
 ;
 $TTL    {{ ttl }}
 @   IN  SOA {{ nameserver[0] }}. {{ email }}. (
-             {{ item.serial }}     ; Serial
+             {{ next_serial }}     ; Serial
              {{ refresh }}            ; Refresh
              {{ retry }}             ; Retry
              {{ expire }}             ; Expire
