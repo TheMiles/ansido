@@ -17,16 +17,24 @@
   - pip:
       name: pyOpenSSL
       state: present
+  - set_fact:
+      dkim_private_key_file: "{{ dkim_dir }}/{{ item.zone }}.private.key"
+      dkim_public_key_file: "{{ dkim_dir }}/{{ item.zone }}.public.key"
   - openssl_privatekey:
-      path: "{{ dkim_dir }}/{{ item.zone }}.private.key"
+      path: "{{ dkim_private_key_file }}"
       owner: "{{ ansible_user }}"
       group: docker
       size: 1024
   - openssl_publickey:
-      path: "{{ dkim_dir }}/{{ item.zone }}.public.key"
-      privatekey_path: "{{ dkim_dir }}/{{ item.zone }}.private.key"
+      path: "{{ dkim_public_key_file }}"
+      privatekey_path: "{{ dkim_private_key_file }}"
       owner: "{{ ansible_user }}"
       group: docker
+  - slurp:
+      src: "{{ dkim_public_key_file }}"
+    register: dkim_public_key_content
+  - set_fact:
+      dkim_public_key: "{{ dkim_public_key_content['content'] | b64decode | replace('\n','') | replace('-----BEGIN PUBLIC KEY-----','') | replace('-----END PUBLIC KEY-----','') }}"
   when: item.mx is defined
 
 - name: Create zone file

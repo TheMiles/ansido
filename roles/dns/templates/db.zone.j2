@@ -4,7 +4,8 @@
 {% set retry              = item.retry              if item.retry              is defined else zone_default.retry %}
 {% set expire             = item.expire             if item.expire             is defined else zone_default.expire %}
 {% set negative_cache_ttl = item.negative_cache_ttl if item.negative_cache_ttl is defined else zone_default.negative_cache_ttl %}
-{% set mail_text          = item.mail_text          if item.mail_text          is defined else zone_default.mail_text %}
+{% set spf_text           = item.spf_text           if item.spf_text           is defined else zone_default.spf_text %}
+{% set dkim_text          = item.dkim_text          if item.dkim_text          is defined else zone_default.dkim_text %}
 {% set nameserver         = item.nameserver         if item.nameserver         is defined else zone_default.nameserver %}
 ;
 ; BIND data file for {{ item.zone }}. zone
@@ -45,5 +46,8 @@ $TTL    {{ ttl }}
 {% endfor %}
 
 {% if item.mx is defined %}
-{{ item.zone }}. TXT "{{ mail_text }}"
+{{ item.zone }}. TXT "{{ spf_text }}"
+{% if dkim_public_key is defined %}
+{{ item.zone }}. TXT "{{ dkim_text | replace('[[dkim_public_key]]',dkim_public_key) }}"
+{% endif %}
 {% endif %}
