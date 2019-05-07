@@ -10,6 +10,7 @@ zone_default: {
     negative_cache_ttl: '1d',
     spf_text: 'v=spf1 a mx -all',
     dkim_text: 'v=DKIM1;k=rsa;p=[[dkim_public_key]]',
+    dmarc_text: 'v=DMARC1; p=reject; rua=mailto:postmaster@[[zone]]; ruf=mailto:admin@[[zone]]; fo=0; adkim=s; aspf=s; pct=100; rf=afrf; sp=reject',
     nameserver: ['ns1.coders-of-the-caribbean.org','ns2.coders-of-the-caribbean.org'],
     nameserver_addresses: ['176.28.17.93', '195.201.139.126'],
     master_host: 'melee',

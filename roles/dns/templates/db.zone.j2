@@ -6,6 +6,7 @@
 {% set negative_cache_ttl = item.negative_cache_ttl if item.negative_cache_ttl is defined else zone_default.negative_cache_ttl %}
 {% set spf_text           = item.spf_text           if item.spf_text           is defined else zone_default.spf_text %}
 {% set dkim_text          = item.dkim_text          if item.dkim_text          is defined else zone_default.dkim_text %}
+{% set dmarc_text         = item.dmarc_text         if item.dmarc_text         is defined else zone_default.dmarc_text %}
 {% set nameserver         = item.nameserver         if item.nameserver         is defined else zone_default.nameserver %}
 ;
 ; BIND data file for {{ item.zone }}. zone
@@ -50,4 +51,5 @@ $TTL    {{ ttl }}
 {% if dkim_public_key is defined %}
 {{ item.zone }}. TXT "{{ dkim_text | replace('[[dkim_public_key]]',dkim_public_key) }}"
 {% endif %}
+{{ item.zone }}. TXT "{{ dmarc_text | replace('[[zone]]',item.zone) }}"
 {% endif %}
