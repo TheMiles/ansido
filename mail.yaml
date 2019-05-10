@@ -1,7 +1,10 @@
 - hosts: scabb
   remote_user: miles
   become: true
+  vars_files:
+    - vars.yaml
+    - vars_vault.yaml
   roles:
     - docker
-    - letsencrypt
+    - mail
 

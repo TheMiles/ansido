@@ -1,0 +1,5 @@
+---
+letsencrypt_email: rumiles@gmail.com
+mailserver_domains:
+  scabb: 'lauschwaren.de'
+

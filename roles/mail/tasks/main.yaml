@@ -1,0 +1,78 @@
+---
+
+- name: purge Exim installation
+  apt: name={{packages}} state=absent purge=yes
+  vars:
+    packages:
+    - exim4
+    - exim4-base
+    - exim4-config
+    - exim4-daemon-light
+  when: ansible_os_family == "Debian"
+
+- name: Configure firewall for Mail
+  ufw: rule=allow port={{item}} proto='tcp'
+  with_items:
+  - 25
+  - 80
+  - 110
+  - 143
+  - 443
+  - 465
+  - 587
+  - 993
+  - 995
+  - 4190
+
+- name: Copy over docker-compose.yml
+  copy:
+    src: 'docker-compose.yaml'
+    dest: "{{ mailserver_base_dir }}/docker-compose.yaml"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0644
+
+- name: Add traefik directory
+  file:
+    state: directory
+    mode: '755'
+    owner: "{{ ansible_user }}"
+    group: docker
+    path: "{{ mailserver_base_dir }}/{{ item }}"
+  with_items:
+     - 'traefik'
+     - 'traefik/acme'
+
+- name: Create acme file
+  file:
+    state: touch
+    path: "{{ mailserver_base_dir }}/traefik/acme/acme.json"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0600
+
+- name: Create traefik.toml
+  template:
+    src: 'traefik.toml'
+    dest: "{{ mailserver_base_dir }}/traefik/traefik.toml"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0600
+
+- name: Create .env
+  template:
+    src: '.env'
+    dest: "{{ mailserver_base_dir }}/.env"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0600
+
+- name: create docker networks
+  docker_network:
+    name: "{{item}}"
+  with_items:
+    - 'http_network'
+    - 'mail_network'
+
+
+
