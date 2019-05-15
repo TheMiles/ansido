@@ -67,6 +67,24 @@
     group: docker
     mode: 0600
 
+- name: link DKIM keys
+  block:
+  - set_fact:
+      dkim_destination_dir: "{{ mailserver_base_dir }}/mail/dkim"
+  - stat:
+      path: "{{ dkim_destination_dir }}"
+    register: dkim_folder_existing
+  - file:
+      path: "{{ dkim_destination_dir }}/"
+      state: absent
+    when: dkim_folder_existing.stat.isdir is defined and dkim_folder_existing.stat.isdir
+  - file:
+      src: "{{ dkim_dir }}"
+      dest: "{{ dkim_destination_dir }}"
+      state: link
+      force: yes
+    when: dkim_folder_existing.stat.isdir is defined and dkim_folder_existing.stat.isdir
+
 - name: create docker networks
   docker_network:
     name: "{{item}}"
