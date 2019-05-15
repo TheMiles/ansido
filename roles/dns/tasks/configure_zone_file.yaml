@@ -10,7 +10,7 @@
   - file:
       state: directory
       mode: '700'
-      path: "{{ dkim_dir }}"
+      path: "{{ dkim_dir }}/{{ item.zone }}"
       owner: "{{ ansible_user }}"
       group: docker
       recurse: yes
@@ -18,8 +18,8 @@
       name: pyOpenSSL
       state: present
   - set_fact:
-      dkim_private_key_file: "{{ dkim_dir }}/{{ item.zone }}.private.key"
-      dkim_public_key_file: "{{ dkim_dir }}/{{ item.zone }}.public.key"
+      dkim_private_key_file: "{{ dkim_dir }}/{{ item.zone }}/private.key"
+      dkim_public_key_file: "{{ dkim_dir }}/{{ item.zone }}/public.key"
   - openssl_privatekey:
       path: "{{ dkim_private_key_file }}"
       owner: "{{ ansible_user }}"

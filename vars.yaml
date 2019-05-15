@@ -4,4 +4,4 @@ user_pwd: "{{ user_pwd_vault }}"
 
 docker_base_dir: /var/docker
 mailserver_base_dir: "{{ docker_base_dir }}/mailserver"
-dkim_dir: "{{ mailserver_base_dir }}/dkim"
+dkim_dir: "/etc/dkim/keys/"
