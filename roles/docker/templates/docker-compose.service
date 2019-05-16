@@ -1,0 +1,27 @@
+[Unit]
+Description=%i service with docker compose
+Wants=network-online.target docker.service
+After=network-online.target docker.service
+
+[Service]
+WorkingDirectory={{ docker_base_dir }}/%i
+User={{ ansible_user }}
+Type=oneshot
+RemainAfterExit=yes
+
+
+# Remove old containers, images and volumes
+ExecStartPre=/usr/local/bin/docker-compose down -v
+ExecStartPre=/usr/local/bin/docker-compose rm -fv
+ExecStartPre=-/bin/bash -c 'docker volume ls -qf "name=%i_" | xargs --no-run-if-empty docker volume rm'
+ExecStartPre=-/bin/bash -c 'docker network ls -qf "name=%i_" | xargs --no-run-if-empty docker network rm'
+ExecStartPre=-/bin/bash -c 'docker ps -aqf "name=%i_*" | xargs --no-run-if-empty docker rm'
+
+# Compose up
+ExecStart=/usr/local/bin/docker-compose up -d
+
+# Compose down, remove containers and volumes
+ExecStop=/usr/local/bin/docker-compose down -v
+
+[Install]
+WantedBy=multi-user.target

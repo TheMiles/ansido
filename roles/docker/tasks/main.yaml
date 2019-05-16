@@ -28,3 +28,9 @@
     group: docker
     path: "{{ docker_base_dir }}"
 
+- name: New systemd service to run docker-compose
+  template:
+    src: docker-compose.service
+    dest: /etc/systemd/system/docker-compose@.service
+
+

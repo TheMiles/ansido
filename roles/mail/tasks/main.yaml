@@ -99,11 +99,10 @@
     - 'http_network'
     - 'mail_network'
 
-- name: New systemd unit to run docker-compose
-  template:
-    src: mailserver.service
-    dest: /etc/systemd/system/mailserver.service
-
 - name: Enable mailserver.service
-  systemd: name=mailserver.service enabled=true
+  systemd:
+    name: docker-compose@mailserver.service
+    enabled: true
+    daemon_reload: yes
+
 
