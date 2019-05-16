@@ -6,9 +6,6 @@ After=network-online.target docker.service
 [Service]
 WorkingDirectory={{ docker_base_dir }}/%i
 User={{ ansible_user }}
-Type=oneshot
-RemainAfterExit=yes
-
 
 # Remove old containers, images and volumes
 ExecStartPre=/usr/local/bin/docker-compose down -v
@@ -18,7 +15,7 @@ ExecStartPre=-/bin/bash -c 'docker network ls -qf "name=%i_" | xargs --no-run-if
 ExecStartPre=-/bin/bash -c 'docker ps -aqf "name=%i_*" | xargs --no-run-if-empty docker rm'
 
 # Compose up
-ExecStart=/usr/local/bin/docker-compose up -d
+ExecStart=/usr/local/bin/docker-compose up
 
 # Compose down, remove containers and volumes
 ExecStop=/usr/local/bin/docker-compose down -v
