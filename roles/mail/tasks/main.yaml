@@ -24,6 +24,13 @@
   - 995
   - 4190
 
+- name: set variables for mailserver
+  block:
+  - set_fact:
+      mailserver_service: mailserver
+  - set_fact:
+      mailserver_base_dir: "{{docker_base_dir}}/{{mailserver_service}}"
+
 - name: Copy over docker-compose.yml
   copy:
     src: 'docker-compose.yaml'
