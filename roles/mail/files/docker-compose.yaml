@@ -33,6 +33,13 @@ services:
     networks:
       - http_network
 
+  certificat_dumper:
+    image: svendowideit/traefik-certdumper
+    container_name: certificat_dumper
+    restart: ${RESTART_MODE}
+    volumes:
+      - ${VOLUMES_ROOT_PATH}/traefik/acme:/traefik
+
   mailserver:
     image: hardware/mailserver:${MAILSERVER_DOCKER_TAG}
     container_name: mailserver
