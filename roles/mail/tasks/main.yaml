@@ -102,6 +102,7 @@
 - name: Enable mailserver.service
   systemd:
     name: docker-compose@mailserver.service
+    state: restarted
     enabled: true
     daemon_reload: yes
 
