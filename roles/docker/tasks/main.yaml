@@ -33,4 +33,7 @@
     src: docker-compose.service
     dest: /etc/systemd/system/docker-compose@.service
 
-
+- name: Add ipv6 to daemon.json
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
