@@ -1,5 +1,4 @@
 newuser: miles
-ssh_key: https://github.com/TheMiles.keys
 user_pwd: "{{ user_pwd_vault }}"
 
 docker_base_dir: /var/docker

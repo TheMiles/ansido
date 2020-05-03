@@ -8,8 +8,12 @@
           state=present
           shell=/bin/bash
 
-  - authorized_key: user="{{ newuser }}"
-                    key="{{ ssh_key }}"
+  - name: Add public keys for user to authorized_keys file
+    authorized_key: user="{{ newuser }}"
+                    state=present
+                    key="{{ lookup('file', item) }}"
+    with_fileglob:
+      - "public_keys/*.pub"
 
   - name: Make sure we can sudo
     template: src=newuser_sudoer dest=/etc/sudoers.d/{{ newuser }}_sudoer mode=0440
