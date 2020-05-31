@@ -1,7 +1,7 @@
 ---
 
   - name: Install bind DNS package
-    apt: name='bind9' state=present
+    apt: name='bind9' state=present update_cache=yes
 
   - name: Create directories for chroot environment
     file:
