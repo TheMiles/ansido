@@ -4,5 +4,6 @@
   vars_files:
     - vars.yaml
   roles:
+    - docker
     - dns
 

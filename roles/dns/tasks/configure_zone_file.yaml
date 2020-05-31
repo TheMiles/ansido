@@ -7,6 +7,10 @@
 
 - name: Create DKIM key
   block:
+  - group:
+      name: docker
+      state: present
+
   - file:
       state: directory
       mode: '700'
