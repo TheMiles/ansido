@@ -1,6 +1,5 @@
 ---
-  - name: Install ufw
-    package: name=ufw state=present
+  - include: "{{ ansible_os_family }}.yaml"
 
   - name: create a new user
     user: name={{ newuser }}

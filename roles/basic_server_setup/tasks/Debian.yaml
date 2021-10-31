@@ -1,0 +1,7 @@
+---
+
+- name: Install prerequisites for https repository
+  apt: name={{packages}} state=present update_cache=yes
+  vars:
+    packages:
+    - ufw
