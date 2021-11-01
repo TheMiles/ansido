@@ -5,6 +5,7 @@
   vars:
     packages:
     - ufw
-    - python-setuptools
-    - python-pip
+    - python3-setuptools
+    - python3-venv
+    - python3-pip
 
