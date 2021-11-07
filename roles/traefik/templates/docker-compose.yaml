@@ -14,7 +14,7 @@ services:
     command:
       - --api=true
       - --api.dashboard=false
-      - --log.level=info
+      - --log.level=debug
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
     volumes:
