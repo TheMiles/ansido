@@ -8,4 +8,5 @@
     - python3-setuptools
     - python3-venv
     - python3-pip
+    - vim
 
