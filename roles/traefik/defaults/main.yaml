@@ -1,4 +1,2 @@
 traefik_base_dir: "{{docker_base_dir}}/traefik"
 letsencrypt_dir: "letsencrypt"
-hostnames:
-  scabb: 'lauschwaren.de'
