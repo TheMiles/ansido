@@ -31,12 +31,12 @@
     mode: 0644
 
 - name: Copy over traefik configs
-  copy:
+  template:
     src: '{{ item }}'
     dest: "{{ traefik_base_dir }}/{{ item }}"
     owner: "{{ ansible_user }}"
     group: docker
-    mode: 0644
+    mode: 0640
   loop:
     - 'dynamic.yaml'
     - 'static.yaml'
