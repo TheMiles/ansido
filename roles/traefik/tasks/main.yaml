@@ -50,3 +50,15 @@
     group: docker
     mode: 0600
 
+- name: create docker networks
+  docker_network:
+    name: "{{ traefik_network }}"
+
+- name: Enable traefik.service
+  systemd:
+    name: docker-compose@traefik.service
+    state: restarted
+    enabled: true
+    daemon_reload: yes
+
+

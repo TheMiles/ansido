@@ -1,7 +1,8 @@
 version: "3.7"
 networks:
   default:
-    name: traefik-proxy
+    external: true
+    name: "{{ traefik_network }}"
 
 services:
   web2:

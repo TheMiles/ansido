@@ -17,3 +17,13 @@
     mode: 0644
 
 
+- name: Enable whoami.service
+  systemd:
+    name: docker-compose@whoami.service
+    state: restarted
+    enabled: true
+    daemon_reload: yes
+
+
+
+
