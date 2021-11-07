@@ -1,0 +1,12 @@
+version: "3.7"
+networks:
+  default:
+    name: traefik-proxy
+
+services:
+  web2:
+    image: containous/whoami
+    labels:
+     - "traefik.http.routers.web2.rule=Host(`{{ hostnames[ inventory_hostname ] }}`)"
+     - "traefik.http.routers.web2.tls.certResolver=default"
+     - "traefik.http.routers.web2.tls=true"

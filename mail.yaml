@@ -8,5 +8,6 @@
     - docker
     - dns
     - traefik
+    - whoami
     # - mail
 
