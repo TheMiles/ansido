@@ -3,4 +3,5 @@ testserver ansible_ssh_host=127.0.0.1 ansible_ssh_port=3022
 
 [inet]
 scabb ansible_host=195.201.139.126
+phatt ansible_host=23.88.108.73
 
