@@ -1,4 +1,5 @@
-- hosts: inet
+- hosts:
+    - scabb
   remote_user: miles
   become: true
   vars_files:

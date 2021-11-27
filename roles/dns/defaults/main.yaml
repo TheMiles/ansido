@@ -46,6 +46,16 @@ zones:
             ]
         }
     - {
+        zone: 'bannbaladin.de',
+        mx: [{ priority: '10', host: 'mail'}],
+        a: [
+            {
+                name:      ['bannbaladin.de.','www','mail'],
+                address:   ['23.88.108.73','2a01:4f8:c0c:4c0b::'],
+            }
+            ]
+        }
+    - {
         zone: 'lauschwaren.de',
         master_host: 'scabb',
         master_address: '195.201.139.126',
@@ -84,5 +94,13 @@ reverse_zones:
         master_host: 'scabb',
         master_address: '2a01:4f8:1c1c:894a::1',
         ptr: ['lauschwaren.de.','mail.lauschwaren.de.']
+    }
+    - {
+        reverse_zone: '23.88.108.73',
+        ptr: ['bannbaladin.de.','mail.bannbaladin.de.']
+    }
+    - {
+        reverse_zone: '2a01:4f8:c0c:4c0b::',
+        ptr: ['bannbaladin.de.','mail.bannbaladin.de.']
     }
 
