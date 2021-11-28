@@ -1,0 +1,64 @@
+---
+
+- name: Configure firewall for traefik
+  ufw: rule=allow port={{item}} proto='tcp'
+  loop:
+  - 80
+  - 443
+
+- name: Create traefik base dir
+  file:
+    state: directory
+    path: "{{ traefik_base_dir }}"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0755
+
+- name: Create letsencrypt dir
+  file:
+    state: directory
+    path: "{{ traefik_base_dir }}/{{ letsencrypt_dir }}"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0750
+
+- name: Copy over docker-compose.yaml
+  template:
+    src: 'docker-compose.yaml'
+    dest: "{{ traefik_base_dir }}/docker-compose.yaml"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0644
+
+- name: Copy over traefik configs
+  template:
+    src: '{{ item }}'
+    dest: "{{ traefik_base_dir }}/{{ item }}"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0640
+  loop:
+    - 'dynamic.yaml'
+    - 'static.yaml'
+
+
+- name: Create acme file
+  file:
+    state: touch
+    path: "{{ traefik_base_dir }}/{{ letsencrypt_dir }}/acme.json"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0600
+
+- name: create docker networks
+  docker_network:
+    name: "{{ traefik_network }}"
+
+- name: Enable traefik.service
+  systemd:
+    name: docker-compose@traefik.service
+    state: restarted
+    enabled: true
+    daemon_reload: yes
+
+

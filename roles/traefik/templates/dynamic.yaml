@@ -1,0 +1,28 @@
+http:
+  routers:
+    https-redirect:
+      rule: 'HostRegexp(`{any:.*}`)'
+      middlewares:
+       - https-redirect
+      service: redirect-all
+    dashboard:
+      rule: Host(`{{ hostnames[ inventory_hostname ] }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      entrypoints: websecure
+      tls:
+        certresolver: default
+      service: api@internal
+      middlewares:
+        - auth
+  middlewares:
+    https-redirect:
+      redirectScheme:
+        scheme: https
+    auth:
+      basicAuth:
+        users: "{{ traefik_api_vault[ inventory_hostname ] }}"
+  services:
+    redirect-all:
+      loadBalancer:
+        servers:
+         - url: ""
+
