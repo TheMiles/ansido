@@ -4,5 +4,7 @@ user_pwd: "{{ user_pwd_vault }}"
 docker_base_dir: /var/docker
 dkim_dir: "/etc/dkim/keys/"
 
-hostnames:
-  scabb: 'lauschwaren.de'
+hostnames: {
+  scabb: 'lauschwaren.de',
+  phatt: 'bannbaladin.de'
+  }
