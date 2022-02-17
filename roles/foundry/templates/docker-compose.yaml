@@ -1,0 +1,27 @@
+version: "3.8"
+
+networks:
+  default:
+    external: true
+    name: "{{ traefik_network }}"
+
+secrets:
+  config_json:
+    file: secrets.json
+
+services:
+  foundry:
+    image: felddy/foundryvtt:release
+    init: true
+    restart: "unless-stopped"
+    volumes:
+      - type: bind
+        source: "{{ foundry_data_dir }}"
+        target: /data
+    secrets:
+      - source: config_json
+        target: config.json
+    labels:
+      - "traefik.http.routers.web2.rule=Host(`{{ hostnames[ inventory_hostname ] }}`)"
+      - "traefik.http.routers.web2.tls.certResolver=default"
+      - "traefik.http.routers.web2.tls=true"

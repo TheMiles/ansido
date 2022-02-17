@@ -1,0 +1,45 @@
+---
+
+- name: Create foundry base dir
+  file:
+    state: directory
+    path: "{{ foundry_base_dir }}"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0755
+
+- name: Create foundry data dir
+  file:
+    state: directory
+    path: "{{ foundry_data_dir }}"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0750
+
+- name: Copy over foundry secrets
+  template:
+    src: 'secrets.json'
+    dest: "{{ foundry_base_dir }}/secrets.json"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0640
+
+- name: Copy over docker-compose.yaml
+  template:
+    src: 'docker-compose.yaml'
+    dest: "{{ foundry_base_dir }}/docker-compose.yaml"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0644
+
+
+- name: Enable foundry.service
+  systemd:
+    name: docker-compose@foundry.service
+    state: restarted
+    enabled: true
+    daemon_reload: yes
+
+
+
+

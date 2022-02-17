@@ -1,0 +1,2 @@
+foundry_base_dir: "{{docker_base_dir}}/foundry"
+foundry_data_dir: "{{foundry_base_dir}}/data"
