@@ -9,4 +9,15 @@
     - python3-venv
     - python3-pip
     - vim
+    - zsh
+    - tmux
+    - exa
+    - bat
+    - ripgrep
+    - fzf
+    - zoxide
+    - mc
+    - rmlint
+    - ncdu
+    - btop
 
