@@ -4,9 +4,19 @@
   apt: name={{packages}} state=present update_cache=yes
   vars:
     packages:
-    - ufw
     - python3-setuptools
     - python3-venv
     - python3-pip
     - vim
+    - zsh
+    - tmux
+    - exa
+    - bat
+    - ripgrep
+    - fzf
+    - zoxide
+    - mc
+    - rmlint
+    - ncdu
+    - btop
 

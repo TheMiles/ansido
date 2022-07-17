@@ -1,0 +1,9 @@
+---
+  - include_tasks: "{{ ansible_os_family }}.yaml"
+
+  - name: Add public keys for user to authorized_keys file
+    authorized_key: user="{{ newuser }}"
+                    state=present
+                    key="{{ lookup('file', item) }}"
+    with_fileglob:
+      - "public_keys/*.pub"
