@@ -1,5 +1,5 @@
 ---
-- include: "{{ ansible_os_family }}.yaml"
+- include_tasks: "{{ ansible_os_family }}.yaml"
 
 - name: Ensure old module not present
   pip:

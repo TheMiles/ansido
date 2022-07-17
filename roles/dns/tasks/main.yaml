@@ -109,14 +109,20 @@
       mode: 0644
 
   - name: configure forward zone files
-    include: configure_zone_file.yaml zone_filename="db.{{ item.zone }}" zone_template="db.zone.j2"
+    include_tasks: configure_zone_file.yaml
+    vars:
+      zone_filename: "db.{{ item.zone }}" 
+      zone_template: "db.zone.j2"
     when: (item.master_host is defined and item.master_host == inventory_hostname) or
            zone_default.master_host == inventory_hostname
     with_items:
       "{{ zones }}"
 
   - name: configure reverse zone files
-    include: configure_zone_file.yaml zone_filename="db.{{ item.reverse_zone | ipaddr('revdns') }}" zone_template="db.reverse_zone.j2"
+    include_tasks: configure_zone_file.yaml
+    vars:
+      zone_filename: "db.{{ item.reverse_zone | ipaddr('revdns') }}"
+      zone_template: "db.reverse_zone.j2"
     when: (item.master_host is defined and item.master_host == inventory_hostname) or
           zone_default.master_host == inventory_hostname
     with_items:

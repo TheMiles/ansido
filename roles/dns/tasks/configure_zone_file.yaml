@@ -3,7 +3,7 @@
 - set_fact:
     zone_filepath: "{{ chroot_dir }}/etc/bind/{{ zone_filename }}"
 
-- include: retrieve_next_serial.yaml
+- include_tasks: retrieve_next_serial.yaml
 
 - name: Create DKIM key
   block:
