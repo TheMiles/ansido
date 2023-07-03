@@ -4,6 +4,9 @@ user_pwd: "{{ user_pwd_vault }}"
 docker_base_dir: /var/docker
 dkim_dir: "/etc/dkim/keys/"
 
+traefik_network: "backend"  # don't use any service name here, as systemd service will kill it
+letsencrypt_dir: "letsencrypt"
+
 hostnames: {
   scabb: 'lauschwaren.de',
   phatt: 'bannbaladin.de'

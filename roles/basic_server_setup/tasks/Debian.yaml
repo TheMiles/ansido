@@ -9,4 +9,6 @@
     - python3-venv
     - python3-pip
     - vim
+    - zsh
+    - git
 

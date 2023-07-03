@@ -5,9 +5,9 @@
     - vars.yaml
     - vars_vault.yaml
   roles:
-    - docker
-    - dns
+    # - docker
+    # - dns
     - traefik
     - whoami
-    # - mail
+    - mail
 

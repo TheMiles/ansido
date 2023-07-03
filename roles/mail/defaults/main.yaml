@@ -1,5 +1,5 @@
 ---
-letsencrypt_email: rumiles@gmail.com
+mail_base_dir: "{{ docker_base_dir }}/mail"
 mailserver_domains:
   scabb: 'lauschwaren.de'
 

@@ -10,8 +10,14 @@ services:
     container_name: traefik
     restart: unless-stopped
     ports:
-     - 80:80
-     - 443:443
+      # - "25:25"       # SMTP
+      - "80:80"       # HTTP
+      # - "143:143"     # IMAP
+      - "443:443"     # HTTPS
+      # - "587:587"     # SMTPS
+      # - "993:993"     # IMAPS
+      # - "4190:4190"   # SIEVE
+
     command:
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false

@@ -1,3 +1,1 @@
 traefik_base_dir: "{{docker_base_dir}}/traefik"
-traefik_network: "backend"  # don't use any service name here, as systemd service will kill it
-letsencrypt_dir: "letsencrypt"
