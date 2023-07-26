@@ -5,7 +5,8 @@
     user: name={{ newuser }}
           password={{ user_pwd }}
           state=present
-          shell=/bin/bash
+          shell=/usr/bin/zsh
+    register: created_user
 
   - name: Add public keys for user to authorized_keys file
     authorized_key: user="{{ newuser }}"
@@ -16,6 +17,79 @@
 
   - name: Make sure we can sudo
     template: src=newuser_sudoer dest=/etc/sudoers.d/{{ newuser }}_sudoer mode=0440
+
+  - name: Install some configs for {{ newuser }}
+    block:
+      - name: Setup known hosts
+        known_hosts:
+          name: "{{ item.split(' ').0 }}"
+          key: "{{ item }}"
+        with_items: "{{ lookup('file', 'files/known_hosts').splitlines() }}"
+
+      - name: Clone GPakosz tmux config
+        git:
+          repo: https://github.com/gpakosz/.tmux.git
+          dest: "{{ created_user.home }}/.tmux"
+
+      - name: Download oh my zsh for {{ newuser }}
+        uri:
+          url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+          return_content: yes
+        register: oh_my_zsh_installer
+
+      - name: Install oh my zsh
+        shell:
+          cmd: 'sh -s'
+          stdin: "{{ oh_my_zsh_installer.content }}"
+          creates: "{{ created_user.home }}/.oh-my-zsh"
+          chdir: "{{ created_user.home }}"
+
+      - name: Create oh my zsh enabled plugins folder
+        file:
+          path: "{{ created_user.home }}/.oh-my-zsh/enabled_plugins"
+          state: directory
+
+      - name: Select enabled plugins for oh my zsh
+        file:
+          path: "{{ created_user.home }}/.oh-my-zsh/enabled_plugins/{{ item }}"
+          state: touch
+        with_items:
+          - "debian"
+          - "copypath"
+          - "fzf"
+          - "git"
+          - "history"
+          - "jsontools"
+          - "sudo"
+          - "tmux"
+          - "common-aliases"
+
+      - name: Download dotfiles for {{ newuser }}
+        uri:
+          url: https://raw.github.com/themiles/dotfiles/master/update.sh
+          return_content: yes
+        register: dotfiles_installer
+
+      - name: Install dotfiles
+        shell:
+          cmd: 'bash -s'
+          stdin: "{{ dotfiles_installer.content }}"
+          creates: "{{ created_user.home }}/.dotfiles"
+          chdir: "{{ created_user.home }}"
+
+      - name: Create config dir
+        file:
+          path: "{{ created_user.home }}/.config"
+          state: directory
+
+      - name: Clone nvim configuration
+        git:
+          repo: https://github.com/TheMiles/nvim-config.git
+          dest: "{{ created_user.home }}/.config/nvim"
+
+    become: true
+    become_user: "{{ newuser }}"
+
 
   - name: Configure ufw
     ufw: rule=allow port=22 proto=tcp
