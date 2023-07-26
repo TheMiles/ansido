@@ -121,7 +121,7 @@
   - name: configure reverse zone files
     include_tasks: configure_zone_file.yaml
     vars:
-      zone_filename: "db.{{ item.reverse_zone | ipaddr('revdns') }}"
+      zone_filename: "db.{{ item.reverse_zone | ansible.utils.ipaddr('revdns') }}"
       zone_template: "db.reverse_zone.j2"
     when: (item.master_host is defined and item.master_host == inventory_hostname) or
           zone_default.master_host == inventory_hostname

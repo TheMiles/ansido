@@ -32,10 +32,10 @@ $TTL    {{ ttl }}
 ;
 {% for a in item.a %}
 {% for name in a.name %}
-{% for address in a.address | ipv4 %}
+{% for address in a.address | ansible.utils.ipv4 %}
 {{ name }}         A   {{ address }};
 {% endfor %}
-{% for address in a.address | ipv6 %}
+{% for address in a.address | ansible.utils.ipv6 %}
 {{ name }}         AAAA   {{ address }};
 {% endfor %}
 {% endfor %}

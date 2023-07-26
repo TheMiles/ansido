@@ -7,7 +7,7 @@
 {% set mail_text          = item.mail_text          if item.mail_text          is defined else zone_default.mail_text %}
 {% set nameserver         = item.nameserver         if item.nameserver         is defined else zone_default.nameserver %}
 ;
-; BIND data file for {{ item.reverse_zone | ipaddr('revdns') }} zone
+; BIND data file for {{ item.reverse_zone | ansible.utils.ipaddr('revdns') }} zone
 ;
 $TTL    {{ ttl }}
 @   IN  SOA {{ nameserver[0] }}. {{ email }}. (
@@ -23,6 +23,6 @@ $TTL    {{ ttl }}
 {% endfor %}
 
 {% for p in item.ptr %}
-{{ item.reverse_zone | ipaddr('revdns') }} PTR {{ p }};
+{{ item.reverse_zone | ansible.utils.ipaddr('revdns') }} PTR {{ p }};
 {% endfor %}
 
