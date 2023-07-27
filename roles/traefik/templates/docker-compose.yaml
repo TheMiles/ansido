@@ -19,4 +19,4 @@ services:
      - /var/run/docker.sock:/var/run/docker.sock:rw
      - ./static.yaml:/etc/traefik/traefik.yaml
      - ./dynamic.yaml:/etc/traefik/dynamic/dynamic.yaml
-     - ./{{ letsencrypt_dir }}/acme.json:/etc/traefik/acme/acme.json
+     - "{{ letsencrypt_dir }}/acme.json:/etc/traefik/acme/acme.json"

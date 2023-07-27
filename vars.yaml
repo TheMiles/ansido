@@ -5,6 +5,8 @@ docker_base_dir: /var/docker
 dkim_dir: "/etc/dkim/keys/"
 
 traefik_network: "backend"  # don't use any service name here, as systemd service will kill it
+letsencrypt_dir: "{{ docker_base_dir }}/letsencrypt"
+
 host_info: {
   scabb: {
     hostname: 'lauschwaren.de',
