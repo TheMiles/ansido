@@ -4,6 +4,7 @@ user_pwd: "{{ user_pwd_vault }}"
 docker_base_dir: /var/docker
 dkim_dir: "/etc/dkim/keys/"
 
+traefik_network: "backend"  # don't use any service name here, as systemd service will kill it
 host_info: {
   scabb: {
     hostname: 'lauschwaren.de',
