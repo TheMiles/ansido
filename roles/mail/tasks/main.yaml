@@ -1,109 +1,31 @@
 ---
 
-- name: purge Exim installation
-  apt: name={{packages}} state=absent purge=yes
-  vars:
-    packages:
-    - exim4
-    - exim4-base
-    - exim4-config
-    - exim4-daemon-light
-  when: ansible_os_family == "Debian"
-
-- name: Configure firewall for Mail
+- name: Configure firewall for mail
   ufw: rule=allow port={{item}} proto='tcp'
-  with_items:
+  loop:
   - 25
-  - 80
-  - 110
-  - 143
-  - 443
   - 465
-  - 587
-  - 993
-  - 995
   - 4190
 
-- name: set variables for mailserver
-  block:
-  - set_fact:
-      mailserver_service: mailserver
-  - set_fact:
-      mailserver_base_dir: "{{docker_base_dir}}/{{mailserver_service}}"
+- name: Create mail base dir
+  file:
+    state: directory
+    path: "{{ mail_base_dir }}"
+    owner: "{{ ansible_user }}"
+    group: docker
+    mode: 0755
 
-- name: Copy over docker-compose.yml
-  copy:
+- name: Copy over docker-compose.yaml
+  template:
     src: 'docker-compose.yaml'
-    dest: "{{ mailserver_base_dir }}/docker-compose.yaml"
+    dest: "{{ mail_base_dir }}/docker-compose.yaml"
     owner: "{{ ansible_user }}"
     group: docker
     mode: 0644
 
-- name: Add traefik directory
-  file:
-    state: directory
-    mode: '755'
-    owner: "{{ ansible_user }}"
-    group: docker
-    path: "{{ mailserver_base_dir }}/{{ item }}"
-  with_items:
-     - 'traefik'
-     - 'traefik/acme'
-
-- name: Create acme file
-  file:
-    state: touch
-    path: "{{ mailserver_base_dir }}/traefik/acme/acme.json"
-    owner: "{{ ansible_user }}"
-    group: docker
-    mode: 0600
-
-- name: Create traefik.toml
-  template:
-    src: 'traefik.toml'
-    dest: "{{ mailserver_base_dir }}/traefik/traefik.toml"
-    owner: "{{ ansible_user }}"
-    group: docker
-    mode: 0600
-
-- name: Create .env
-  template:
-    src: '.env'
-    dest: "{{ mailserver_base_dir }}/.env"
-    owner: "{{ ansible_user }}"
-    group: docker
-    mode: 0600
-
-- name: link DKIM keys
-  block:
-  - set_fact:
-      dkim_destination_dir: "{{ mailserver_base_dir }}/mail/dkim"
-  - stat:
-      path: "{{ dkim_destination_dir }}"
-    register: dkim_folder_existing
-  - file:
-      path: "{{ dkim_destination_dir }}/"
-      state: absent
-    when: dkim_folder_existing.stat.isdir is defined and dkim_folder_existing.stat.isdir
-  - file:
-      src: "{{ dkim_dir }}"
-      dest: "{{ dkim_destination_dir }}"
-      state: link
-      force: yes
-    when: dkim_folder_existing.stat.isdir is defined and dkim_folder_existing.stat.isdir
-
-- name: create docker networks
-  docker_network:
-    name: "{{item}}"
-  with_items:
-    - 'http_network'
-    - 'mail_network'
-
-- name: Enable mailserver.service
+- name: Enable mail.service
   systemd:
-    name: docker-compose@mailserver.service
-    state: restarted
-    enabled: true
+    name: docker-compose@mail.service
+    state: stopped #restarted
+    enabled: false #true
     daemon_reload: yes
-
-
