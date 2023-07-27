@@ -6,7 +6,7 @@ http:
        - https-redirect
       service: redirect-all
     dashboard:
-      rule: Host(`{{ hostnames[ inventory_hostname ] }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      rule: Host(`{{ host_info[ inventory_hostname ].hostname }}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
       entrypoints: websecure
       tls:
         certresolver: default

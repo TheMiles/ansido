@@ -22,6 +22,6 @@ services:
       - source: config_json
         target: config.json
     labels:
-      - "traefik.http.routers.web2.rule=Host(`{{ hostnames[ inventory_hostname ] }}`)"
+      - "traefik.http.routers.web2.rule=Host(`{{ host_info[ inventory_hostname ].hostname }}`)"
       - "traefik.http.routers.web2.tls.certResolver=default"
       - "traefik.http.routers.web2.tls=true"
