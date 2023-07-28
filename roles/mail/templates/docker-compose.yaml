@@ -6,37 +6,9 @@ networks:
     name: "{{ traefik_network }}"
 
 services:
-  # mail-certdumper:
-  #   image: ghcr.io/kereis/traefik-certs-dumper:latest
-  #   volumes:
-  #     - "{{ letsencrypt_dir }}:/traefik:ro"
-  #     - ./mail_letsencrypt:/output:rw
-  #   environment:
-  #     - DOMAIN="mail.{{ mailserver_domains[inventory_hostname] }}"
-
-  # mailserver-traefik:
-  #   image: registry.gitlab.com/youtous/docker-mailserver-traefik:latest
-  #   container_name: mailserver-traefik
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - "{{ letsencrypt_dir }}/acme.json:/tmp/traefik/acme.json:ro" # link traefik acme.json file (read-only)
-  #   environment:
-  #     - TRAEFIK_VERSION=2
-  #     - CERTS_SOURCE=file
-  #     - DOMAINS="mail.{{ mailserver_domains[inventory_hostname] }}"
-  #     - PUSH_PERIOD=1m
-
-
   mailserver:
     image: ghcr.io/docker-mailserver/docker-mailserver:latest
     container_name: mailserver
-    # command: > # Since v10.3.0, certificates must be present at startup: https://github.com/docker-mailserver/docker-mailserver/blob/a4095a7d48082fe0dbfd2146cf9be4ed743736d1/target/scripts/startup/setup-stack.sh#L989
-    #   sh -c '
-    #     mkdir -p $$(dirname "$$SSL_KEY_PATH") &&
-    #     touch -a "$$SSL_KEY_PATH" &&
-    #     touch -a "$$SSL_CERT_PATH" &&
-    #     supervisord -c /etc/supervisor/supervisord.conf
-    #   '
     hostname: mail
     domainname: "{{ mailserver_domains[inventory_hostname] }}"
     ports:
@@ -53,8 +25,6 @@ services:
       - "{{ letsencrypt_dir }}/acme.json:/etc/letsencrypt/acme.json:ro"
       - "/etc/localtime:/etc/localtime:ro"
     labels:
-      # - "mailserver-traefik.renew.domain=mail.{{ mailserver_domains[inventory_hostname] }}" # tag the service 
-
       - "traefik.enable=true" # use traefik v2 for certificate generation
       - "traefik.port=443" # dummy port, required generating certs with traefik
       - "traefik.http.routers.mail.tls=true"
@@ -69,8 +39,6 @@ services:
       # Using letsencrypt for SSL/TLS certificates
       - SSL_TYPE=letsencrypt
       - SSL_DOMAIN="mail.{{ mailserver_domains[inventory_hostname] }}"
-      # - SSL_CERT_PATH=/var/mail-state/manual-ssl/cert
-      # - SSL_KEY_PATH=/var/mail-state/manual-ssl/key
 
       - ENABLE_FAIL2BAN=1
       
