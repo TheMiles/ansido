@@ -26,6 +26,6 @@
 - name: Enable mail.service
   systemd:
     name: docker-compose@mail.service
-    state: stopped #restarted
-    enabled: false #true
+    state: restarted
+    enabled: true
     daemon_reload: yes
