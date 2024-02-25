@@ -19,3 +19,25 @@ It installs a new user, a firewall and configures ssh connection.
 
 `ansible-playbook basic.yaml --vault-password-file ~/.vault_pass.txt -k -l <hostname>`
 
+
+# Borg Backup
+
+For using borg backup and Hetzner Storage Box you need to do manual steps on the
+host after the role has run:
+
+First create a keypair
+
+```bash
+ssh-keygen -t ed25519
+```
+
+Then you can upload the public key:
+
+```bash
+cat ~/.ssh/id_ed25519.pub | ssh backup install-ssh-key
+```
+
+
+
+
+
