@@ -1,0 +1,6 @@
+
+Host backup
+    HostName {{borg_user[inventory_hostname]}}.your-storagebox.de
+    User     {{borg_user[inventory_hostname]}}
+    Port     23
+    IdentityFile ~/.ssh/id_ed25519
